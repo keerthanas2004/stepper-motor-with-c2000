@@ -1,0 +1,96 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --board "/boards/TMDSCNCD28P55X" --context "system" --product "C2000WARE@5.02.00.00"
+ * @versions {"tool":"1.20.0+3587"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const ecap  = scripting.addModule("/driverlib/ecap.js", {}, false);
+const ecap1 = ecap.addInstance();
+const epwm  = scripting.addModule("/driverlib/epwm.js", {}, false);
+const epwm1 = epwm.addInstance();
+const epwm2 = epwm.addInstance();
+const gpio  = scripting.addModule("/driverlib/gpio.js", {}, false);
+const gpio1 = gpio.addInstance();
+const gpio2 = gpio.addInstance();
+const gpio3 = gpio.addInstance();
+const gpio4 = gpio.addInstance();
+const sci   = scripting.addModule("/driverlib/sci.js", {}, false);
+const sci1  = sci.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+ecap1.$name                   = "ECAP_ECHO";
+ecap1.eventStop               = "ECAP_EVENT_2";
+ecap1.eventTwoPolarity        = "ECAP_EVNT_FALLING_EDGE";
+ecap1.registerInterrupts      = true;
+ecap1.enableInterrupt         = true;
+ecap1.counterResetOnEvent     = ["ECAP_EVENT_1"];
+ecap1.ecapInput               = "ECAP_INPUT_GPIO22";
+ecap1.interruptSourceCapture  = ["ECAP_ISR_SOURCE_CAPTURE_EVENT_2"];
+ecap1.ecapInt.enableInterrupt = true;
+
+epwm1.$name                                                    = "myEPWM0";
+epwm1.$hardware                                                = system.deviceData.board.components.PWM_LOC1;
+epwm1.epwmTimebase_clockDiv                                    = "EPWM_CLOCK_DIVIDER_32";
+epwm1.epwmTimebase_hsClockDiv                                  = "EPWM_HSCLOCK_DIVIDER_1";
+epwm1.epwmTimebase_period                                      = 46874;
+epwm1.epwmCounterCompare_cmpA                                  = 11718;
+epwm1.epwmCounterCompare_cmpB                                  = 23437;
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_ZERO    = "EPWM_AQ_OUTPUT_HIGH";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPA = "EPWM_AQ_OUTPUT_LOW";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_UP_CMPA = "EPWM_AQ_OUTPUT_HIGH";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_UP_CMPB = "EPWM_AQ_OUTPUT_LOW";
+epwm1.epwm.$assign                                             = "EPWM1";
+epwm1.epwm.epwm_aPin.$assign                                   = "hsecDigital.49";
+epwm1.epwm.epwm_bPin.$assign                                   = "hsecDigital.51";
+
+epwm2.$name                                                    = "myEPWM1";
+epwm2.$hardware                                                = system.deviceData.board.components.PWM_LOC2;
+epwm2.epwmTimebase_clockDiv                                    = "EPWM_CLOCK_DIVIDER_32";
+epwm2.epwmTimebase_period                                      = 46874;
+epwm2.epwmCounterCompare_cmpA                                  = 23437;
+epwm2.epwmCounterCompare_cmpB                                  = 35155;
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPA = "EPWM_AQ_OUTPUT_HIGH";
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPB = "EPWM_AQ_OUTPUT_LOW";
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_PERIOD  = "EPWM_AQ_OUTPUT_LOW";
+epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_UP_CMPB = "EPWM_AQ_OUTPUT_HIGH";
+epwm2.epwmTimebase_hsClockDiv                                  = "EPWM_HSCLOCK_DIVIDER_1";
+epwm2.epwm.$assign                                             = "EPWM2";
+epwm2.epwm.epwm_aPin.$assign                                   = "hsecDigital.53";
+epwm2.epwm.epwm_bPin.$assign                                   = "hsecDigital.55";
+
+gpio1.$name           = "OUT_IR";
+gpio1.gpioPin.$assign = "hsecDigital.108";
+
+gpio2.direction       = "GPIO_DIR_MODE_OUT";
+gpio2.$name           = "OUT_TRIG";
+gpio2.gpioPin.$assign = "hsecDigital.88";
+
+gpio3.$name     = "LED1";
+gpio3.$hardware = system.deviceData.board.components.D1;
+gpio3.direction = "GPIO_DIR_MODE_OUT";
+
+gpio4.$name     = "LED2";
+gpio4.$hardware = system.deviceData.board.components.D2;
+gpio4.direction = "GPIO_DIR_MODE_OUT";
+
+sci1.baudRates             = 9600;
+sci1.$name                 = "mySCIA";
+sci1.sci.$assign           = "SCIA";
+sci1.sci.sci_rxPin.$assign = "hsecDigital.76";
+sci1.sci.sci_txPin.$assign = "hsecDigital.78";
+scripting.suppress("Connected to hardware,@@@.+?@@@ is connected to SCIA on the Control Card F28P55X\\. Consider selecting it in \'use hardware\' above\\. @@@.+?@@@", sci1.sci, "sci_rxPin");
+scripting.suppress("Connected to hardware,@@@.+?@@@ is connected to SCIA on the Control Card F28P55X\\. Consider selecting it in \'use hardware\' above\\. @@@.+?@@@", sci1.sci, "sci_txPin");
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+gpio3.gpioPin.$suggestSolution = "hsecDigital.82";
+gpio4.gpioPin.$suggestSolution = "hsecDigital.86";
